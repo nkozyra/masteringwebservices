@@ -1,0 +1,54 @@
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+<script>
+	var socket;
+
+	function update(msg) {
+		$('#messageArea').html(msg);
+	}
+
+	function connectWS(){
+
+		var host = "ws://localhost:12345/length";
+		socket = new WebSocket(host);
+		socket.onopen = function() {
+			update("Websocket connected");
+		};
+		socket.onmessage = function(message){
+			update('Websocket counted '+message.data+' characters in your message');
+		};
+
+		socket.onclose = function() {
+			update('Websocket closed');
+		};
+
+	}
+
+	function send() {
+		socket.send($('#message').val());
+	}
+
+	function closeSocket() {
+		socket.close();
+	}
+
+	connectWS();
+
+</script>
+
+
+<div>
+	<h2>Your message</h2>
+	<textarea style="width:50%;height:300px;font-size:20px;" id="message"></textarea>
+	<div><input type="submit" value="Send" onclick="send()" /> <input type="button" onclick="closeSocket();" value="Close" /></div>
+</div>
+
+<div id="messageArea"></div>
+
+</body>
+</html>
