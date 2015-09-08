@@ -23,10 +23,8 @@ func WrappedMiddleware(h http.Handler) func(http.ResponseWriter, *http.Request) 
 }
 
 func middleware(ph http.HandlerFunc, middleHandlers ...func(http.HandlerFunc) http.HandlerFunc) http.HandlerFunc {
-	fmt.Println("hello?")
 	var next http.HandlerFunc = ph
 	for _, mw := range middleHandlers {
-		fmt.Println("Um?")
 		next = mw(ph)
 	}
 	return next
